@@ -1,7 +1,6 @@
 LabelArray = [];
 input = [];
-let player = "x";
-let turn = 0;
+let player = "X";
 let row = 0;
 let col = 0;
 const winConditions = [
@@ -15,6 +14,11 @@ const winConditions = [
     [2, 4, 6]
 ];
 let options = ["", "", "", "", "", "", "", "", ""];
+let btn = document.getElementById("rest-btn");
+let turen_field = document.getElementById("turn-field");
+let win = document.getElementById("win-field");
+
+
 
 for (let i = 0; i<=8; i++){
     const box = document.getElementById("label-"+i.toString());
@@ -25,35 +29,46 @@ for (let i in LabelArray){
     LabelArray[i].addEventListener("click", function(){
         LabelArray[i].innerHTML = player;
         options[i] =  player;
-        player = Change_player();
-        
-        for(let i = 0; i < winConditions.length; i++){
-            const condition = winConditions[i];
-            const cellA = options[condition[0]];
-            const cellB = options[condition[1]];
-            const cellC = options[condition[2]];
-        
-            if(cellA == "" || cellB == "" || cellC == ""){
-                continue;
-            }
-            if(cellA == cellB && cellB == cellC){
-                console.log("You won!")
-         }
+        Change_player();
+        Clear_board()
+        Check_winnner();
+        Check_playerr_turn();
+        });
+}
+
+function Clear_board(){
+    btn.onclick = function(){
+        for( let i in options){
+            options[i] = "";
+            LabelArray[i].innerHTML = "";
         }
-    });
+    
+    }
 }
 
 
+function Check_winnner(){
+    for(let i = 0; i < winConditions.length; i++){
+        const condition = winConditions[i];
+        const cellA = options[condition[0]];
+        const cellB = options[condition[1]];
+        const cellC = options[condition[2]];
 
-function Change_player(){
-        if (turn == 1){
-            turn = 0
-            player = "x";
+        if(cellA == "" || cellB == "" || cellC == ""){
+            continue;
         }
-        else{
-            turn = 1
-            player = "o";
-        }
-        return player;
+        if(cellA == cellB && cellB == cellC){
+            win.innerHTML = (cellA+" Won the game!");
+     }
+    }
 }
 
+let Change_player  = () =>{
+    player = (player == "X") ? player ="O":  player ="X";
+    return player;
+}
+
+let Check_playerr_turn = () =>{
+    (player == "X") ? turen_field.innerHTML = "Its X's turn":  turen_field.innerHTML = "Its O's turn";
+    return turen_field.innerHTML;
+}
